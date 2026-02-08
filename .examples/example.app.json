@@ -1,0 +1,23 @@
+{
+    "name": "app_name",
+    "identifier": "com.example.app_name",
+    "default_theme": "dark",
+    "windows" : [
+        {
+            "label": "main",
+            "display_id": 0,
+            "on_start": true,
+            "width": 1200,
+            "height": 600,
+            "type": "center",
+            "decorated": false
+        },
+        {
+            "label": "base",
+            "display_id": 0,
+            "width": 1200,
+            "height": 600,
+            "type": "center"
+        }
+    ]
+}

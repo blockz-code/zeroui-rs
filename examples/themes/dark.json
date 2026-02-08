@@ -1,0 +1,15 @@
+{
+    "app_bg" : "#111111",
+    "app_text" : "#ffffff",
+    "app_border" : "#222222",
+    "app_content" : "#151515",
+
+    "menu_item_bg" : "#151515",
+    "menu_item_text" : "#ffffff",
+    "menu_item_icon" : "#ffffff",
+    "menu_item_border" : "#222222",
+
+    "footer_bg" : "#151515",
+    "footer_text" : "#ffffff",
+    "footer_border" : "#222222"
+}

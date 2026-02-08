@@ -1,0 +1,51 @@
+[package]
+name = "zeroui-rs"
+version = "0.1.0"
+edition = "2024"
+
+[features]
+all = [ "plugins" ]
+default = []
+
+plugins = ["dep:plugins-rs"]
+
+[build-dependencies]
+include_dir = "0.7.4"
+
+[dependencies]
+tokio = { version = "1", features = ["rt"] }
+
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.145"
+
+log = "0.4.29"
+env_logger = "0.11.8"
+anyhow = "1.0.100"
+thiserror = "2.0.17"
+reqwest = { version = "0.13.0", features = ["blocking", "json", "http3"] }
+
+
+gpui = { version = "0.2.2" }
+gpui-component = "=0.5.0"
+cargo-packager-updater = "0.2.3"
+
+which = "8.0.0"
+rand = "0.9.2"
+dirs = "6.0.0"
+nanoid = "0.4.0"
+schemars = "1.1.0"
+fs-walk = "0.2.2"
+
+
+include_dir = "0.7.4"
+rust-embed  = { version = "8.9.0", features = ["compression", "interpolate-folder-path", "deterministic-timestamps", "debug-embed"] }
+
+
+rusqlite = { version = "0.38.0", features = ["bundled"] }
+
+plugins-rs = { path = "../../Fork/plugins-rs", features = ["all"], optional = true }
+
+
+[[example]]
+name = "main"
+path = "examples/main.rs"

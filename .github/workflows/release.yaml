@@ -1,0 +1,46 @@
+name: Generate Docs
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+      environment:
+        name: zeroui-rs release
+        
+      runs-on: ubuntu-latest
+        
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+            
+        - uses: Swatinem/rust-cache@v1
+
+        - name: Install Rust toolchain
+          uses: actions-rs/toolchain@v1
+          with:
+            toolchain: stable
+            profile: minimal
+            override: true
+            components: rustfmt, rust-src
+
+        - name: Build Library
+          uses: actions-rs/cargo@v1
+          with:
+            command: build 
+            args: -p zeroui-rs --release
+                
+        - name: Release
+          uses: akkuman/gitea-release-action@v1
+          with:
+          files: |-
+            target/release/**
+          sha256sum : true
+          api_key: '${{secrets.RELEASE_TOKEN}}'
