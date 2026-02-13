@@ -2741,6 +2741,7 @@ dependencies = [
 [[package]]
 name = "ffbins-rs"
 version = "0.1.0"
+source = "git+https://github.com/blockz-dev/ffbins-rs#91be4a1a0ef61856b8e0c2ccb1f1f9aa7af34f84"
 dependencies = [
  "regex",
  "reqwest 0.13.1",
@@ -5912,6 +5913,7 @@ checksum = "7edddbd0b52d732b21ad9a5fab5c704c14cd949e5e9a1ec5929a24fded1b904c"
 [[package]]
 name = "plugins-rs"
 version = "0.1.0"
+source = "git+https://github.com/blockz-dev/plugins-rs#e4a7a9e1ee7c753a762c7645ae4a3a41de51aee7"
 dependencies = [
  "ansi_term",
  "deno_ast",
