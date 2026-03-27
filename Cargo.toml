@@ -50,7 +50,7 @@ rust-embed  = { version = "8.9.0", features = ["compression", "interpolate-folde
 
 rusqlite = { version = "0.38.0", features = ["bundled"] }
 
-plugins-rs = { git = "https://github.com/blockz-dev/plugins-rs", features = ["all"], optional = true }
+plugins-rs = { version = "0.1.1", optional = true }
 
 
 [[example]]
