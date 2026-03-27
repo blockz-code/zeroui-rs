@@ -1,13 +1,23 @@
 # ZeroUI
 
-Build your apps with ZeroUI
+<center class="display: flex; align-items: center; justify-content: center; width: 100%; gap: 5px;">
+<h3>Build your apps with ZeroUI</h3>
+</center>
+
+<center class="display: flex; align-items: center; justify-content: center; width: 100%; gap: 5px;">
+    <span style="display: inline-block;">
+        <a href="https://crates.io/crates/zeroui-rs">
+            <img src="https://img.shields.io/crates/v/zeroui-rs?style=flat-square">
+        </a>
+    </span>
+</center>
 
 ---
 
 **Cargo.toml**
 
 ```toml
-zeroui-rs = { git = "https://github.com/blockz-dev/zeroui-rs", branch = "dev" }
+zeroui-rs = { version = "0.1.0" }
 ```
 
 ---

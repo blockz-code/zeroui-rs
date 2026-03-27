@@ -2,6 +2,13 @@
 name = "zeroui-rs"
 version = "0.1.0"
 edition = "2024"
+description = "build desktop apps with zeroui-rs wrapped around gpui.rs"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/blockz-code/zeroui-rs"
+readme = "README.md"
+keywords = ["desktop", "native"]
+categories = ["development-tools"]
+authors = ["p1mo <101986259+p1mo@users.noreply.github.com>"]
 
 [features]
 all = [ "plugins" ]
