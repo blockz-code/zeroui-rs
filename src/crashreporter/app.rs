@@ -114,8 +114,8 @@ impl Render for CrashReporterUI {
                             .on_click(cx.listener(move |app,  _evt, _win, ctx| {
                                 app.update_logs("logs");
                                 app.current = 0;
-                                ctx.notify();
                                 ctx.refresh_windows();
+                                ctx.notify();
                             }))
                     )
                     .child(
@@ -133,8 +133,8 @@ impl Render for CrashReporterUI {
                             .on_click(cx.listener(move |app,  _evt, _win, ctx| {
                                 app.update_logs("logs_warning");
                                 app.current = 1;
-                                ctx.notify();
                                 ctx.refresh_windows();
+                                ctx.notify();
                             }))
                     )
                     .child(
@@ -152,8 +152,8 @@ impl Render for CrashReporterUI {
                             .on_click(cx.listener(move |app,  _evt, _win, ctx| {
                                 app.update_logs("logs_trace");
                                 app.current = 2;
-                                ctx.notify();
                                 ctx.refresh_windows();
+                                ctx.notify();
                             }))
                     )
                     .child(
@@ -171,8 +171,8 @@ impl Render for CrashReporterUI {
                             .on_click(cx.listener(move |app,  _evt, _win, ctx| {
                                 app.update_logs("logs_error");
                                 app.current = 3;
-                                ctx.notify();
                                 ctx.refresh_windows();
+                                ctx.notify();
                             }))
                     )
                     .child(div().flex().w_2().h_9().mx_1().child(""))
@@ -191,8 +191,8 @@ impl Render for CrashReporterUI {
                             .child("Send Report")
                             .on_click(cx.listener(move |app,  _evt, _win, ctx| {
                                 app.send_report();
-                                ctx.notify();
                                 ctx.refresh_windows();
+                                ctx.notify();
                             }))
                     )
                     .child(div().flex().w_2().h_9().mx_1().child(""))
@@ -211,8 +211,8 @@ impl Render for CrashReporterUI {
                             .child("Clean Database")
                             .on_click(cx.listener(move |app,  _evt, _win, ctx| {
                                 app.clear_db();
-                                ctx.notify();
                                 ctx.refresh_windows();
+                                ctx.notify();
                             }))
                     )
             )
@@ -258,7 +258,13 @@ impl Render for CrashReporterUI {
                                                     .flex()
                                                     .w_full()
                                                     .pl_1()
-                                                    .child(row.message.clone())
+                                                    .child({
+                                                        let raw = row.message.clone();
+                                                        let mut parts = raw.split("\n");
+                                                        let msg = parts.next().unwrap();
+
+                                                        format!("{}{}", msg, if parts.count() > 1 { "..." } else { "" })
+                                                    })
                                             )
                                     );
                                 }

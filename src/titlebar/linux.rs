@@ -42,8 +42,8 @@ pub fn init(tb: crate::Titlebar, window: &mut Window, cx: &mut Context<crate::Wi
                     .font_weight(FontWeight::SEMIBOLD)
                     .text_color(text_color)
                     .child(tb.title.unwrap_or("No Title.".to_string()))
+                    .window_control_area(WindowControlArea::Drag)
                     .on_mouse_down(MouseButton::Left, |_, window, _| {
-                        // Start native window move/drag (works on Linux Wayland/X11 + macOS)
                         window.start_window_move();
                     })
         )
@@ -56,8 +56,8 @@ pub fn init(tb: crate::Titlebar, window: &mut Window, cx: &mut Context<crate::Wi
                     .w_full()
                     .h_full()
                     .child("")// or any draggable area
+                    .window_control_area(WindowControlArea::Drag)
                     .on_mouse_down(MouseButton::Left, |_, window, _| {
-                        // Start native window move/drag (works on Linux Wayland/X11 + macOS)
                         window.start_window_move();
                     })
         )
@@ -88,8 +88,8 @@ pub fn init(tb: crate::Titlebar, window: &mut Window, cx: &mut Context<crate::Wi
                                 .text_color(icon_color)
                                 .path("titlebar/l-min.svg")
                         )
-                        .on_click(cx.listener(|w, evt, ww, ctx| {
-                            ww.minimize_window(); 
+                        .on_click(cx.listener(|_, _, window, ctx| {
+                            window.minimize_window(); 
                             ctx.notify();
                         }))
                 )
@@ -111,8 +111,8 @@ pub fn init(tb: crate::Titlebar, window: &mut Window, cx: &mut Context<crate::Wi
                                 .text_color(icon_color)
                                 .path(format!("titlebar/{}", if window.is_maximized() { "l-unmax.svg" } else { "l-max.svg" }))
                         )
-                        .on_click(cx.listener(|w, evt, ww, ctx| {
-                            ww.toggle_fullscreen();
+                        .on_click(cx.listener(|_, _, window, ctx| {
+                            window.toggle_fullscreen();
                             ctx.notify();
                         }))
                 )
