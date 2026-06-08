@@ -28,7 +28,7 @@ pub type FetchBuilder = ReqwestClientBuilder;
 pub enum FetchType {
     HTTP1,
     HTTP2,
-    HTTP3,
+    //HTTP3,
     TCP,
     UDP
 }
@@ -54,7 +54,7 @@ impl Fetch {
         match http_type {
             FetchType::HTTP1 => self.with_agent().http1_only(),
             FetchType::HTTP2 => self.with_agent().http2_prior_knowledge(),
-            FetchType::HTTP3 => self.with_agent().http3_prior_knowledge(),
+            //FetchType::HTTP3 => self.with_agent().http3_prior_knowledge(),
             _ => self.with_agent().http1_only(),            
         }.build().unwrap().into()
     }
