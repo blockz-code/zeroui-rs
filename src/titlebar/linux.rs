@@ -2,11 +2,11 @@
 
 
 
-use gpui::{ Context, Div, FontWeight, InteractiveElement, ParentElement, Styled, Window, WindowControlArea, div, px, rgba, svg };
+use gpui::{ Context, Div, FontWeight, InteractiveElement, MouseButton, ParentElement, StatefulInteractiveElement, Styled, Window, WindowControlArea, div, px, rgba, svg };
 
 
 
-pub fn init(tb: crate::Titlebar, window: &mut Window, _cx: &mut Context<crate::Win>) -> Div {
+pub fn init(tb: crate::Titlebar, window: &mut Window, cx: &mut Context<crate::Win>) -> Div {
         
     let btn_width = px(40.0);
 
@@ -42,7 +42,10 @@ pub fn init(tb: crate::Titlebar, window: &mut Window, _cx: &mut Context<crate::W
                     .font_weight(FontWeight::SEMIBOLD)
                     .text_color(text_color)
                     .child(tb.title.unwrap_or("No Title.".to_string()))
-                    .window_control_area(WindowControlArea::Drag)
+                    .on_mouse_down(MouseButton::Left, |_, window, _| {
+                        // Start native window move/drag (works on Linux Wayland/X11 + macOS)
+                        window.start_window_move();
+                    })
         )
         .child(
                 div()
@@ -52,8 +55,11 @@ pub fn init(tb: crate::Titlebar, window: &mut Window, _cx: &mut Context<crate::W
                     .justify_center() 
                     .w_full()
                     .h_full()
-                    .child("")
-                    .window_control_area(WindowControlArea::Drag)
+                    .child("")// or any draggable area
+                    .on_mouse_down(MouseButton::Left, |_, window, _| {
+                        // Start native window move/drag (works on Linux Wayland/X11 + macOS)
+                        window.start_window_move();
+                    })
         )
         .child(
             div()
@@ -82,7 +88,10 @@ pub fn init(tb: crate::Titlebar, window: &mut Window, _cx: &mut Context<crate::W
                                 .text_color(icon_color)
                                 .path("titlebar/l-min.svg")
                         )
-                        .window_control_area(WindowControlArea::Min)
+                        .on_click(cx.listener(|w, evt, ww, ctx| {
+                            ww.minimize_window(); 
+                            ctx.notify();
+                        }))
                 )
                 .child(
                     div()
@@ -102,7 +111,10 @@ pub fn init(tb: crate::Titlebar, window: &mut Window, _cx: &mut Context<crate::W
                                 .text_color(icon_color)
                                 .path(format!("titlebar/{}", if window.is_maximized() { "l-unmax.svg" } else { "l-max.svg" }))
                         )
-                        .window_control_area(WindowControlArea::Max)
+                        .on_click(cx.listener(|w, evt, ww, ctx| {
+                            ww.toggle_fullscreen();
+                            ctx.notify();
+                        }))
                 )
                 .child(
                     div()
@@ -122,7 +134,10 @@ pub fn init(tb: crate::Titlebar, window: &mut Window, _cx: &mut Context<crate::W
                                 .text_color(icon_color)
                                 .path("titlebar/l-close.svg")
                         )
-                        .window_control_area(WindowControlArea::Close)
+                        .on_click(cx.listener(|w, evt, ww, ctx| {
+                            ww.remove_window();
+                            ctx.notify();
+                        }))
                 )
         )
 
