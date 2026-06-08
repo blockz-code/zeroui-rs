@@ -73,8 +73,6 @@ pub type WindowLayoutRoot = gpui_component::Root;
 
 
 
-#[cfg(feature = "plugins")]
-pub use plugins_rs as plugins;
 
 
 
@@ -104,9 +102,6 @@ pub struct Application {
     updater: Option<Updater>,
     titlebar : Option<Titlebar>,
 
-    #[cfg(feature = "plugins")]
-    plugin_system: Option<Arc<Mutex<plugins_rs::PluginSystem>>>,
-
     windows: Arc<Mutex<HashMap<String, Win>>>,
 
     #[allow(unused)]
@@ -125,9 +120,6 @@ impl Application {
 
             http : Fetch::new(),
             titlebar : Some(Titlebar::new()),
-
-            #[cfg(feature = "plugins")]
-            plugin_system: None,
 
             windows : Arc::new(Mutex::new(HashMap::new())),
 
@@ -150,11 +142,6 @@ impl Application {
     //
     pub fn get_version(&mut self) -> Option<&String> {
         self.version.as_ref()
-    }
-    //
-    #[cfg(feature = "plugins")]
-    pub fn plugin_system(&self) -> Arc<Mutex<plugins_rs::PluginSystem>> {
-        self.plugin_system.as_ref().unwrap().clone()
     }
     //
     pub fn fetch(&self) -> &Fetch {
@@ -287,12 +274,6 @@ impl Builder {
     //
     pub fn set_version(mut self, v: &str) -> Self {
         self.main.version = Some(v.to_string());
-        self
-    }
-    //
-    #[cfg(feature = "plugins")]
-    pub fn plugin_system(mut self, v: plugins_rs::PluginSystem) -> Self {
-        self.main.plugin_system = Some(Arc::new(Mutex::new(v)));
         self
     }
     //

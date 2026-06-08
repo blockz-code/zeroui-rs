@@ -1,9 +1,0 @@
-name = "wails-example"
-before-packaging-command = "wails build -nopackage"
-out-dir = "./build/bin"
-version = "0.0.0"
-product-name = "Wails example"
-identifier = "com.wails.example"
-resources = ["Cargo.toml", "src", "32x32.png"]
-icons = ["32x32.png"]
-binaries = [{ path = "wails_example", main = true }]
