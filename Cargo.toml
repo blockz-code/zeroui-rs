@@ -10,46 +10,53 @@ keywords = ["desktop", "native"]
 categories = ["development-tools"]
 authors = ["p1mo <101986259+p1mo@users.noreply.github.com>"]
 
+
 [features]
 all = []
 default = []
-
 gpui-component = [ "dep:gpui-component" ]
+
 
 [build-dependencies]
 include_dir = "0.7.4"
 
+
 [dependencies]
 tokio = { version = "1", features = ["rt"] }
 
-serde = { version = "1.0.228", features = ["derive"] }
-serde_json = "1.0.145"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
 
-log = "0.4.29"
-env_logger = "0.11.8"
-anyhow = "1.0.100"
-thiserror = "2.0.17"
-reqwest = { version = "0.13.4", features = ["blocking", "json"] }
+log = "0.4"
+env_logger = "0.11"
+anyhow = "1"
+thiserror = "2"
+reqwest = { version = "0.13", features = ["blocking", "json"] }
 
-
-gpui = { git = "https://github.com/zed-industries/zed" }
-gpui_platform = { git = "https://github.com/zed-industries/zed", features = ["font-kit", "x11", "wayland", "runtime_shaders"] }
+gpui = { git = "https://github.com/zed-industries/zed", tag = "v1.10.2" }
 gpui-component = { git = "https://github.com/longbridge/gpui-component", optional = true }
+
 cargo-packager-updater = "0.2.3"
 
-which = "8.0.0"
-rand = "0.10.1"
-dirs = "6.0.0"
-nanoid = "0.5.0"
-schemars = "1.1.0"
-fs-walk = "0.2.2"
+which = "8"
+rand = "0.10"
+dirs = "6"
+nanoid = "0.5"
+schemars = "1.2"
+fs-walk = "0.2"
+include_dir = "0.7"
+rusqlite = { version = "0.40", features = ["bundled"] }
+rust-embed  = { version = "8", features = ["compression", "interpolate-folder-path", "deterministic-timestamps", "debug-embed", "include-exclude"] }
 
 
-include_dir = "0.7.4"
-rust-embed  = { version = "8.12.0", features = ["compression", "interpolate-folder-path", "deterministic-timestamps", "debug-embed", "include-exclude"] }
+[target.'cfg(target_os = "windows")'.dependencies]
+gpui_platform = { git = "https://github.com/zed-industries/zed", tag = "v1.10.2", features = [] }
 
+[target.'cfg(target_os = "linux")'.dependencies]
+gpui_platform = { git = "https://github.com/zed-industries/zed", tag = "v1.10.2", features = ["x11", "wayland"] }
 
-rusqlite = { version = "0.40.1", features = ["bundled"] }
+[target.'cfg(target_os = "macos")'.dependencies]
+gpui_platform = { git = "https://github.com/zed-industries/zed", tag = "v1.10.2", features = ["font-kit"] }
 
 
 [[example]]
