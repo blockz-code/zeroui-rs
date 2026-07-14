@@ -1,15 +1,10 @@
 use gpui::{
-    Context,
-    InteractiveElement, 
-    SharedString, 
-    StatefulInteractiveElement, 
-    Window, 
-    prelude::*, 
-    div, px, rgb, rgba
+    Context, FontWeight, InteractiveElement, SharedString, StatefulInteractiveElement, Window, div, prelude::*, px, rgb, rgba
 };
 
-use gpui_component::StyledExt;
-use gpui_component::scroll::ScrollableElement;
+
+#[cfg(feature = "gpui-component")]
+use gpui_component::{StyledExt, scroll::ScrollableElement};
 
 pub struct CrashReporterUI {
     pub conn: super::Conn,
@@ -98,7 +93,7 @@ impl Render for CrashReporterUI {
                     .h_9()
                     .bg(base_bg)
                     .text_sm()
-                    .font_semibold()
+                    .font_weight(FontWeight::SEMIBOLD)
                     .child(
                         div()
                             .id("update-logs")
@@ -231,7 +226,6 @@ impl Render for CrashReporterUI {
                             .w_full()
                             .h_full()
                             .overflow_x_hidden()
-                            .overflow_y_scrollbar()
                             .children({
                                 let mut items = Vec::new();
                                 for row in self.logs.iter() {
@@ -278,7 +272,7 @@ impl Render for CrashReporterUI {
                                             .w_full()
                                             .h_full()
                                             .text_xl()
-                                            .font_semibold()
+                                            .font_weight(FontWeight::SEMIBOLD)
                                             .child(match self.current {
                                                 0 => "No Logs".to_string(),
                                                 1 => "No Warnings".to_string(),

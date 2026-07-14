@@ -8,7 +8,6 @@ use zeroui_rs::{
 
 
 
-
 #[derive(Debug, serde::Deserialize)]
 pub struct JsonTheme {
     pub app_bg : Rgba,
@@ -70,7 +69,7 @@ fn menu(items: &'static [(&str, &str)], win: &mut Win, cx: &mut Context<Win>) ->
 }
 
 
- 
+
 fn main() -> Result<(), anyhow::Error> {
 
     let content = ContentBuilder::new("/home")
@@ -79,14 +78,14 @@ fn main() -> Result<(), anyhow::Error> {
                 .id("content-home")
                 .w_full()
                 .h_full()
-                .child("Home")
+                .child("dfgdfgdfgdfgfdgfdgdgdfgd")
         })
         .add("/flash", |_w, _app, _window, _ctx| {
             div()
                 .id("content-flash")
                 .w_full()
                 .h_full()
-                .child("Flash")
+                .child("fgdgfgfdgdgfdgd")
         })
         .add("/download", |_w, _app, _window, _ctx| {
             div()

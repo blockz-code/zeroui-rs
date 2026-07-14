@@ -1,8 +1,8 @@
-use gpui::{AssetSource, SharedString};
 use std::{borrow::Cow, path::PathBuf};
 
 
 
+use gpui::{AssetSource, SharedString};
 pub use rust_embed::Embed as EmbedDerive;
 
 

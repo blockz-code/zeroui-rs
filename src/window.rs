@@ -59,10 +59,10 @@ impl Win {
 
     pub fn create_window(&mut self, cx: &mut Context<'_, Win>, label: &str) -> Result<()> {
         let (w, options) = self.app.get_window(label, cx)?;
-        cx.open_window(options, move |win, cx| {
-            let view = cx.new(|_| w);
-            cx.new(|cx| gpui_component::Root::new(view, win, cx))
-        }).unwrap();
+        #[cfg(feature = "gpui-component")]
+        cx.open_window(options, move |win, cx| cx.new(|cx| gpui_component::Root::new(cx.new(|_| w), win, cx))).unwrap();
+        #[cfg(not(feature = "gpui-component"))]
+        cx.open_window(options, move |_win, cx| cx.new(|_| w)).unwrap();
         Ok(())
     }
 

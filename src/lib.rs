@@ -5,7 +5,9 @@ use std::path::PathBuf;
 
 pub use gpui;
 use gpui::{ KeyBinding, actions };
-use gpui::{ AnyView, AppContext, Context, Div, Global, SharedString, Stateful, TitlebarOptions, Window, WindowOptions };
+use gpui::{ AppContext, Context, Div, Global, SharedString, Stateful, TitlebarOptions, Window, WindowOptions };
+
+
 
 pub mod components;
 
@@ -67,9 +69,6 @@ use std::sync::Arc;
 use std::sync::Mutex;
 
 use crate::database::Database;
-
-
-pub type WindowLayoutRoot = gpui_component::Root;
 
 
 
@@ -214,15 +213,11 @@ impl Application {
         })
     }
     //
-    pub fn root_window(&mut self, view: impl Into<AnyView>, window: &mut Window, cx: &mut gpui::Context<'_, WindowLayoutRoot>) -> WindowLayoutRoot {
-        gpui_component::Root::new(view, window, cx)
-    }
-    //
     pub fn open_window(&mut self, cx: &mut gpui::App, w: Win, options: WindowOptions) -> Result<()> {
-        cx.open_window(options, move |win, ctx| {
-            let view = ctx.new(|_| w);
-            ctx.new(|cx| gpui_component::Root::new(view, win, cx))
-        })?;
+        #[cfg(feature = "gpui-component")]
+        cx.open_window(options, move |win, ctx| ctx.new(|cx| gpui_component::Root::new(ctx.new(|_| w), win, cx)))?;
+        #[cfg(not(feature = "gpui-component"))]
+        cx.open_window(options, move |_win, ctx| ctx.new(|_| w))?;
         Ok(())
     }
     //
@@ -312,14 +307,18 @@ impl Builder {
         drop(guard);
         self
     }
-    //
-    pub fn run(mut self) -> Result<()> {
+    
 
-        gpui::Application::new()
+
+    pub fn run<'a>(mut self) -> Result<()> {
+
+        gpui_platform::application()
             .with_assets(if self.assets.is_none() { Assets::empty() } else { self.assets.unwrap() })
             .with_assets(if self.multi_assets.is_none() { Assets::empty() } else { self.multi_assets.unwrap() })
             .with_assets(InternalAssets)
-            .run(move |cx| {
+            .run(move |cx: &mut gpui::App| {
+                
+                #[cfg(feature = "gpui-component")]
                 gpui_component::init(cx);
 
                 cx.activate(true);
@@ -328,7 +327,7 @@ impl Builder {
 
                 //cx.on_app_quit( move |app| on_app_quit(app, &mut main)).detach();
 
-                cx.on_window_closed(|cx| {
+                cx.on_window_closed(|cx, _wid| {
                     if cx.windows().is_empty() {
                         cx.quit();
                     }
@@ -337,17 +336,13 @@ impl Builder {
                 let (w, options) = self.main.get_window(&self.window_name, cx).unwrap();
 
                 cx.spawn(async move |cx| {
-
-                    cx.open_window(options, move |win, ctx| {
-                        let view = ctx.new(|_| w);
-                        ctx.new(|cx| gpui_component::Root::new(view, win, cx))
-                    }).unwrap();
-
+                    #[cfg(feature = "gpui-component")]
+                    cx.open_window(options, move |win, ctx| ctx.new(|cx| gpui_component::Root::new(view = ctx.new(|_| w), win, cx))).unwrap();
+                    #[cfg(not(feature = "gpui-component"))]
+                    cx.open_window(options, move |_win, ctx| ctx.new(|_| w)).unwrap();
                     Ok::<_, anyhow::Error>(())
-
                 })
                 .detach();
-
             });
 
         Ok(())

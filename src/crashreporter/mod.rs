@@ -5,7 +5,7 @@ use super::{ Database, database::Conn };
 
 use env_logger::Builder;
 use log::Level;
-use gpui::{App, Application, Bounds, TitlebarOptions, WindowBounds, WindowOptions, size, px, prelude::*};
+use gpui::{App, Bounds, TitlebarOptions, WindowBounds, WindowOptions, size, px, prelude::*};
 use tokio::runtime::Builder as AsyncRuntimeBuilder;
 use std::path::PathBuf;
 
@@ -107,29 +107,26 @@ impl CrashReporter {
 
         let conn = self.db.conn.clone();
 
-        Application::new().run(|acx: &mut App| {
+        gpui_platform::application().run(|acx: &mut App| {
 
+            #[cfg(feature = "gpui-component")]
             gpui_component::init(acx);
 
             let bounds = Bounds::centered(None, size(px(1000.), px(500.0)), acx);
 
-            acx.open_window(
-                WindowOptions {
-                    titlebar: Some(TitlebarOptions {
-                        title: Some(title.into()),
-                        ..Default::default()
-                    }),
-                    window_bounds: Some(WindowBounds::Windowed(bounds)),
+            let options = WindowOptions {
+                titlebar: Some(TitlebarOptions {
+                    title: Some(title.into()),
                     ..Default::default()
-                },
-                |win, cx| {
+                }),
+                window_bounds: Some(WindowBounds::Windowed(bounds)),
+                ..Default::default()
+            };
 
-                    let view = cx.new(|_| app::CrashReporterUI::new(conn, title.into()));
-
-                    cx.new(|ctx| gpui_component::Root::new(view, win, ctx))
-
-                },
-            ).unwrap();
+            #[cfg(feature = "gpui-component")]
+            acx.open_window(options, |win, cx| cx.new(|ctx| gpui_component::Root::new(cx.new(|_| app::CrashReporterUI::new(conn, title.into())), win, ctx))).unwrap();
+            #[cfg(not(feature = "gpui-component"))]
+            acx.open_window(options, |_win, cx| cx.new(|_| app::CrashReporterUI::new(conn, title.into()))).unwrap();
 
             acx.activate(true);
 
